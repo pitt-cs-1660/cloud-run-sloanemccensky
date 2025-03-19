@@ -38,7 +38,7 @@ async function createIdToken() {
   if (authDisabled()) {
     console.warn('Auth is disabled. Returning dummy ID token.');
     return new Promise((resolve) => {
-        resolve('dummyToken');  // return a dummy ID token
+      resolve('dummyToken');  // return a dummy ID token
     })
   } else {
     return await firebase.auth().currentUser.getIdToken();
@@ -77,7 +77,7 @@ function signOut() {
   firebase
     .auth()
     .signOut()
-    .then(result => {})
+    .then(result => { })
     .catch(err => {
       console.log(`Error during sign out: ${err.message}`);
       window.alert(`Sign out failed. Retry or check your browser logs.`);
@@ -117,10 +117,23 @@ async function vote(team) {
     try {
       const token = await createIdToken();
 
-      /*
-       * ++++ YOUR CODE HERE ++++
-       */
-      window.alert(`Not implemented yet!`);
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        body: `team=${team}`,
+      })
+
+      if (res.ok) {
+        console.log(`Vote successfully cast for ${team}`)
+        window.alert(`You've successfully voted for Team ${team}!`)
+        window.location.reload()
+      } else {
+        console.log('POST Error response:', res)
+        throw new Error(`POST Error casting vote: ${res.status}, ${res.statusText}`)
+      }
 
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
