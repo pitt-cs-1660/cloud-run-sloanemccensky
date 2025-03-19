@@ -129,6 +129,7 @@ async function vote(team) {
       if (res.ok) {
         console.log(`Vote successfully cast for ${team}`)
         window.alert(`You've successfully voted for Team ${team}!`)
+        window.location.reload()
       } else {
         console.log('POST Error response:', res)
         throw new Error(`POST Error casting vote: ${res.status}, ${res.statusText}`)
